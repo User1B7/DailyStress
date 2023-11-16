@@ -29,8 +29,8 @@ def getDays():
 #tokenstore = os.getenv("GARMINTOKENS") or "~/.garminconnect"
 api = None
 
-email = "big0brudi@gmail.com"
-password = "IDontKnow1"
+email = "your@mail.com"
+password = "Password"
 
 garmin = Garmin(email, password)
 #garmin.logout()
