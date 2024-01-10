@@ -20,6 +20,10 @@ def init_garmin_api(email, password):
         return f"ERROR: {err}"
     return api
 
+def logout_garmin_api(api):
+    # Disonnect API -- if this wont happen the api will block further attempts
+    api.login() 
+
 if __name__ == "__main__":
     
     # Time span
