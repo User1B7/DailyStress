@@ -93,17 +93,18 @@ def save_data(api, start_date, end_date,
                 json.dump(data, json_file) 
 
 if __name__ == "__main__":
-    from main import init_garmin_api
+    from connecting import init_garmin_api
     
     start_date = datetime.date(2023, 12, 7)
     end_date = datetime.date.today()
 
     # Enter your email address and password here to test individual methods more quickly with the api
-    email = "..."
-    password = "..."
+    email = "big0brudi@gmail.com"
+    password = "IDontKnow1"
     
     api = init_garmin_api(email, password)
 
     save_data(api, start_date, end_date, func=[get_steps_data, get_heart_rates, get_sleep_data, 
                    get_stress_data, get_body_battery, get_rhr_day, 
                    get_blood_pressure, get_respiration_data])
+    api.logout()

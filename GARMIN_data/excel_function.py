@@ -16,8 +16,9 @@ def get_excel_data():
         if not ":" in str(df["Pause Ende"][i]):
             df["Pause Start"][i] = 0
             df["Pause Ende"][i] = 0
+    return df
 
 if __name__ == "__main__":
     df = get_excel_data()
-    # print(df)
+    print(df)
     # print(df.shape)

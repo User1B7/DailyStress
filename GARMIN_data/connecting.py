@@ -1,4 +1,3 @@
-from garmin_function import save_data
 from garminconnect import (Garmin,  
                            GarminConnectConnectionError, 
                            GarminConnectAuthenticationError, 
@@ -22,9 +21,10 @@ def init_garmin_api(email, password):
 
 def logout_garmin_api(api):
     # Disonnect API -- if this wont happen the api will block further attempts
-    api.login() 
+    api.logout() 
 
 if __name__ == "__main__":
+    from garmin_function import save_data
     
     # Time span
     start_date = datetime.date(2023, 12, 7)

@@ -1,4 +1,5 @@
 from GARMIN_data import connecting as gcon
+from GARMIN_data import garmin_function as gf
 import datetime
 
 
@@ -10,4 +11,6 @@ email = input("Email: ")
 password = input("Password: ")
 
 api = gcon.init_garmin_api(email, password)
-gcon.save_data(api, start_date, end_date)
+gf.save_data(api, start_date, end_date)
+
+gcon.logout_garmin_api(api)
