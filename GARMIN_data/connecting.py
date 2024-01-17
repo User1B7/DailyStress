@@ -36,3 +36,5 @@ if __name__ == "__main__":
     
     api = init_garmin_api(email, password)
     save_data(api, start_date, end_date)
+
+    api.logout()

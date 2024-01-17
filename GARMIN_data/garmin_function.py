@@ -99,8 +99,8 @@ if __name__ == "__main__":
     end_date = datetime.date.today()
 
     # Enter your email address and password here to test individual methods more quickly with the api
-    email = "big0brudi@gmail.com"
-    password = "IDontKnow1"
+    email = input("Email: ")
+    password = input("Password: ")
     
     api = init_garmin_api(email, password)
 
