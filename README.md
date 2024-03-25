@@ -21,3 +21,5 @@ cd Get_GARMIN_Data
 python main.py 
 ```
 This script automatically creates a folder *data/* to store the data which will be processed in the next step. This data is reformatted for the AI model as .csv files, which are required for later model training.
+
+test
