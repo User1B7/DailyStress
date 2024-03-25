@@ -1,6 +1,3 @@
-![GitHub](https://img.shields.io/github/license/till-teb/expenses-management-tool)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/till-teb/expenses-management-tool/main.yml)
-
 # DailyStress
 
 This Python project is part of a [ZDD](https://github.com/ZDDduesseldorf)-HSD digital health study  to identify patterns and predict when students are most stressed during their academic activities. The data is collected using a GARMIN Forerunner 255 watch and the analysis of various physiological and activity metrics involves AI/ML techniques.
