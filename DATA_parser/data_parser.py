@@ -1,5 +1,7 @@
 import os
 import json
+from datetime import datetime
+import holidays
 
 def load_json_data(filepath):
     with open(filepath, 'r') as file:
@@ -38,15 +40,26 @@ def parse_sleep(data):
 
 def parse_stress(data):
 
-    records = [
-        {
+    # Erstellung eines Feiertagskalenders für Deutschland (bundesweit)
+    de_holidays = holidays.CountryHoliday('DE')
+
+    records = []
+    for obj in data:
+        # Umwandlung des Datums in ein datetime Objekt
+        date_obj = datetime.strptime(obj['calendarDate'], '%Y-%m-%d')
+        date_str = date_obj.strftime('%Y-%m-%d')
+
+        # Prüfung, ob es sich um einen Dienstag (1) oder Mittwoch (2) handelt
+        is_tue_or_wed = 1 if date_obj.weekday() in [1, 2] and date_str not in de_holidays else 0
+
+        record = {
             'calendarDate': obj['calendarDate'],
             'maxStressLevel': obj['maxStressLevel'],
-            'avgStressLevel': obj['avgStressLevel']
+            'avgStressLevel': obj['avgStressLevel'],
+            'isTueOrWed': is_tue_or_wed  # Hinzugefügte Spalte für Dienstag/Mittwoch
         }
-        for obj in data
-    ]
-    
+        records.append(record)
+
     return records
 
 def parse_heart_rates(data):
@@ -112,8 +125,11 @@ def iter_files(directory_path):
 
 if __name__ == "__main__":
 
-    filepath = 'data/Liza/sleep_data.json'
+    import pandas as pd
+
+    filepath = 'data/Liza/stress_data.json'
     print(os.getcwd())
-    sleep_data = load_json_data(filepath)
-    
-    print(type(sleep_data))
+    data = load_json_data(filepath)
+    print(type(data))
+    df_stress_data = pd.DataFrame(parse_stress(data))
+    print(df_stress_data)
