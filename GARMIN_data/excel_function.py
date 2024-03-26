@@ -1,9 +1,16 @@
 import pandas as pd
 import json
+import warnings
+
+warnings.simplefilter("ignore")
 
 
 def get_excel_data():
-    df = pd.read_csv("./GARMIN_data/excel/stundenbuch.csv")
+    url2 = "https://docs.google.com/spreadsheets/d/1-5QijnBttDqLJFZssCqQ4vqi7CBir6LY4ctp8qOqwQw/edit#gid=1351272459"
+    url_part1 = "/".join(url2.split("/")[:-1])
+    url_part2 = url2.split("/")[-1][-10:]
+    new_url = f"{url_part1}/export?gid={url_part2}&format=csv"
+    df = pd.read_csv(new_url, sep=",", on_bad_lines="skip")
     df.columns = [
         "Zeitstempel",
         "Mail",
@@ -14,6 +21,7 @@ def get_excel_data():
         "Pausen",
         "Ende",
     ]
+
     df["Zeitstempel"] = [d[0:10] for d in df["Zeitstempel"]]
     df.fillna(0, inplace=True)
     df["Pausen"] = [str(d).replace(" ", "").replace("bis", ",") for d in df["Pausen"]]
@@ -30,22 +38,12 @@ def get_excel_data():
     return df
 
 
-def get_json_name_data():
-    with open("./GARMIN_data/json/names.json") as f:
-        data = json.load(f)
-
-    # Convert JSON to Pandas DataFrame
-    df = pd.DataFrame(data)
-    return df
-
-
 def sort_by_names():
     df = get_excel_data()
-    with open("./GARMIN_data/json/names.json") as f:
+    with open("./data/names.json") as f:
         data = json.load(f)
     print(data)
     print(type(data))
-    # df2 = get_json_name_data()
     df["Name"] = ""
     for i in range(len(df["Mail"])):
         if df["Mail"][i] in data:
