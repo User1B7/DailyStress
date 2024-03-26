@@ -1,3 +1,5 @@
 garminconnect
 pandas
 tqdm
+holidays
+sklearn
