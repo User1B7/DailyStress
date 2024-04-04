@@ -3,6 +3,10 @@ import random
 from tqdm import tqdm
 
 
+# create augmentation for pandas dataframes
+# n defines how many new rows should be inserted
+# distance defines how far the range is of allowed new values to the original value in percentage
+# not_changeable defines the columns, which shouldnt be changed, those will just get copied
 def augmentation(
     df,
     n=100,
@@ -29,7 +33,6 @@ def augmentation(
                         random.uniform(col - (col * distance), col + (col * distance))
                     )
             rows_l.append(col_l)
-        # print(len(col_l))
     rows_df = pd.DataFrame(rows_l, columns=list(df.columns))
     new_df = pd.concat([new_df, rows_df], axis=0)
     return new_df
@@ -44,7 +47,7 @@ if __name__ == "__main__":
         os.path.join(current_dir, "data")
     )
 
-    # DataFrames erstellen
+    # create DataFrames
     df_stress_data = pd.DataFrame(stress_data)
     df_heart_rates = pd.DataFrame(heart_rates)
     df_sleep_data = pd.DataFrame(sleep_data)

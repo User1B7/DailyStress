@@ -5,8 +5,9 @@ import warnings
 warnings.simplefilter("ignore")
 
 
+# get data from excel file
 def get_excel_data(path_to_folder=""):
-    new_url = path_to_folder+"data/stundenbuch.csv"
+    new_url = path_to_folder + "data/stundenbuch.csv"
     df = pd.read_csv(new_url, sep=",", on_bad_lines="skip")
     df.columns = [
         "Time_stemp",
@@ -19,6 +20,7 @@ def get_excel_data(path_to_folder=""):
         "End",
     ]
 
+    # clean values in the dataframe
     df["Time_stemp"] = [d[0:10].replace("/", "-") for d in df["Time_stemp"]]
     df.fillna(0, inplace=True)
     df["Brake"] = [str(d).replace(" ", "").replace("bis", ",") for d in df["Brake"]]
@@ -35,6 +37,7 @@ def get_excel_data(path_to_folder=""):
     return df
 
 
+# insert names into dataframe
 def sort_by_names(path_to_folder="./"):
     df = get_excel_data(path_to_folder=path_to_folder)
     with open(f"{path_to_folder}data/names.json") as f:

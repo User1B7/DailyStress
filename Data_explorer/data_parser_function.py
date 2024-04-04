@@ -10,25 +10,20 @@ def load_json_data(filepath):
         return json.load(file)
 
 
-# Notizen : sleep data heart rates ,cleanen und gute Data suchen, danach Augmentation
-# Kommentare nicht vergessen !!!
 # Parser
-
-
 def parse_sleep(data):
     records = []
     for entry in data:  # Scrolls through each day's data in the list
-        # print("entry", entry)
         sleep_data = entry[
             "dailySleepDTO"
         ]  # Access to the daily sleep DTO for each entry
-        # Calculation of sleep quality
-        # (REM + deep sleep) / total sleep time * 100, minus percentage of waking state
         total_sleep_time = sleep_data["sleepTimeSeconds"] or 0
         rem_sleep_seconds = sleep_data["remSleepSeconds"] or 0
         deep_sleep_seconds = sleep_data["deepSleepSeconds"] or 0
         awake_sleep_seconds = sleep_data["awakeSleepSeconds"] or 0
 
+        # Calculation of sleep quality
+        # (REM + deep sleep) / total sleep time * 100, minus percentage of waking state
         if total_sleep_time > 0:  # Prevents division by zero
             quality = (
                 (rem_sleep_seconds + deep_sleep_seconds) / total_sleep_time * 100
@@ -36,6 +31,7 @@ def parse_sleep(data):
         else:
             quality = 0  # Sets quality to 0 if no sleep time is specified
 
+        # calculating own min, max and average data due to not being implemented or differences by garmin
         sStart = 0
         sEnd = 0
         averageRespirationValue = 0
@@ -75,15 +71,13 @@ def parse_sleep(data):
             "maxRPV": highestRespirationValue,
             "avgSleepStress": avgSleepStress,
         }
-        # print("record", record)
         records.append(record)
-        # break
 
     return records
 
 
 def parse_stress(data):
-    # Erstellung eines Feiertagskalenders für Deutschland (bundesweit)
+    # creates a calender where the probands had holidays, by holiday data in germany
     de_holidays = holidays.CountryHoliday("DE")
 
     records = []
@@ -92,10 +86,12 @@ def parse_stress(data):
         date_obj = datetime.strptime(obj["calendarDate"], "%Y-%m-%d")
         date_str = date_obj.strftime("%Y-%m-%d")
 
-        # Prüfung, ob es sich um einen Dienstag (1) oder Mittwoch (2) handelt
+        # check if the probands had uni that day
         is_uni = (
             1 if date_obj.weekday() in [0, 1, 3] and date_str not in de_holidays else 0
         )
+
+        # calculating own min, max and average data due to not being implemented or differences by garmin
         stress_min = 0
         stress_max = 0
         stress_avg = 0
@@ -129,20 +125,20 @@ def parse_stress(data):
             "is_uni": is_uni,  # Hinzugefügte Spalte für Dienstag/Mittwoch
         }
         records.append(record)
+
     return records
 
 
 def parse_heart_rates(data):
     records = []
     for obj in data:
-        # print("obj", obj)
         avg = 0
+        # returnsd the average heartrate values if there are enough values
         hrr = np.array(obj["heartRateValues"])
         if len(hrr.shape) == 2:
             hr = hrr[:, 1]
             hr = hr[(hr != None)]
             avg = hr.mean()
-            # print("obj", hr)
         records.append(
             {
                 "calendarDate": obj["calendarDate"],
@@ -156,12 +152,11 @@ def parse_heart_rates(data):
             }
         )
 
-    # print("record", records)
-
     return records
 
 
 def parse_body_battery(data):
+    # list of classes to change string values into numbers using the index
     classes = [None, "VERY_LOW", "LOW", "MODERATE", "HIGH"]
     records = []
     for day in data:
@@ -170,10 +165,6 @@ def parse_body_battery(data):
                 "date": obj["date"],
                 "charged": obj["charged"],
                 "drained": obj["drained"],
-                # "startTimestampGMT": obj["startTimestampGMT"],
-                # "endTimestampGMT": obj["endTimestampGMT"],
-                # "startTimestampLocal": obj["startTimestampLocal"],
-                # "endTimestampLocal": obj["endTimestampLocal"],
                 "bodyBatteryDynamicFeedbackEvent": classes.index(
                     obj.get("bodyBatteryDynamicFeedbackEvent", {}).get(
                         "bodyBatteryLevel", None
@@ -190,15 +181,14 @@ def parse_body_battery(data):
     return records
 
 
-# Iter files
-
-
+# inserts the name for each row
 def insert_names(wn, name):
     for w in wn:
         w["names"] = name
     return wn
 
 
+# Iterates through the wanted files, skips unneeded files and returns the complete dataframes
 def iter_files(directory_path, with_names=False):
     stress_data = []
     heart_rates = []
@@ -235,6 +225,7 @@ def iter_files(directory_path, with_names=False):
                         body_battery.extend(parse_body_battery(data))
                 else:
                     print(f"Unrecognized file: {file}")
+
     return stress_data, heart_rates, sleep_data, body_battery
 
 
