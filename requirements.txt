@@ -2,4 +2,13 @@ garminconnect
 pandas
 tqdm
 holidays
-sklearn
+scikit-learn
+gdown
+garminconnect
+datetime
+random
+json
+numpy
+warnings
+matplotlib
+seaborn

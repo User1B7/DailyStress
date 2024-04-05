@@ -15,9 +15,24 @@ git clone https://github.com/User1B7/DailyStress.git
 cd DailyStress
 pip install -r requirements.txt
 ```
-First, navigate to the *Get_GARMIN_Data/* folder and run the *main.py* file to download the data as a .JSON file to your computer.  
+First, navigate to the *Data_collector/* folder and run the *garmin_collector_main.py* file to download your data as .JSON files to your computer.  
 ```bash
-cd Get_GARMIN_Data
-python main.py 
+cd Data_collector
+python garmin_collector_main.py 
 ```
 This script automatically creates a folder *data/* to store the data which will be processed in the next step. This data is reformatted for the AI model as .csv files, which are required for later model training.
+
+If you dont want to save your own data but want to load already saved date you can navigate to the *Data_collector/* folder and run the *drive_collector_main.py*
+```bash
+cd Data_collector
+python drive_collector_main.py 
+```
+This script automatically saves the *data/* folder and all saved files in it.
+
+In the next step you have to manually load the *stundenbuch.csv* and save it into *data/*
+<br><br>
+[Stundenbuch.csv](https://docs.google.com/spreadsheets/d/1-5QijnBttDqLJFZssCqQ4vqi7CBir6LY4ctp8qOqwQw/edit#gid=1351272459)
+<br><br>
+This is needed for our labels, because this file contains our interview data
+
+Finaly, you can navigate to the *Data_explorer/* folder and run the notebook *explor_data_random_forest.ipynb* and run the project.
