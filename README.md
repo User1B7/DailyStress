@@ -30,8 +30,6 @@ python drive_collector_main.py
 This script automatically saves the *data/* folder and all saved files in it.
 
 In the next step you have to manually load the *stundenbuch.csv* and save it into *data/*
-```bash
 [Stundenbuch.csv](https://docs.google.com/spreadsheets/d/1-5QijnBttDqLJFZssCqQ4vqi7CBir6LY4ctp8qOqwQw/edit#gid=1351272459)
-```
 This is needed for our labels, because this file contains our interview data
 
