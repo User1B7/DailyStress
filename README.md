@@ -36,3 +36,10 @@ In the next step you have to manually load the *stundenbuch.csv* and save it int
 This is needed for our labels, because this file contains our interview data
 
 Finaly, you can navigate to the *Data_explorer/* folder and run the notebook *explor_data_random_forest.ipynb* and run the project.
+
+
+
+## Correlation
+This is the correlation of our features which get used for the 6 decision tree classification models.
+
+![image](https://github.com/User1B7/DailyStress/assets/73638219/2b47f6bd-b4d9-4007-ba20-61ed59358013)
