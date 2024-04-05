@@ -35,3 +35,4 @@ In the next step you have to manually load the *stundenbuch.csv* and save it int
 <br><br>
 This is needed for our labels, because this file contains our interview data
 
+Finaly, you can navigate to the *Data_explorer/* folder and run the notebook *explor_data_random_forest.ipynb* and run the project.
